@@ -1,6 +1,7 @@
 var WORKER_URL = 'https://nexus-api.nitanaredleaf.workers.dev';
 var KEY_STORAGE = 'nexus_api_key';
 var LANG_STORAGE = 'nexus_lang';
+var VERSION_STORAGE = 'nexus_game_version';
 
 var translations = {
   ua: {
@@ -27,6 +28,13 @@ var translations = {
     statusMaybe: 'Можливо',
     statusNo: 'Несумісний',
     statusUnknown: 'Невідомо',
+    versionLabel: 'Версія Skyrim SE (GOG):',
+    versionCurrent: '1.6.1179 (поточна)',
+    versionOld: '1.6.659 (стара)',
+    voteCompatible: 'Сумісний',
+    voteIncompatible: 'Несумісний',
+    communityVotes: 'Голоси спільноти:',
+    voteSaved: 'Голос збережено',
   },
   en: {
     title: 'GOG Skyrim Mod Checker',
@@ -52,6 +60,13 @@ var translations = {
     statusMaybe: 'Possibly',
     statusNo: 'Incompatible',
     statusUnknown: 'Unknown',
+    versionLabel: 'Skyrim SE version (GOG):',
+    versionCurrent: '1.6.1179 (current)',
+    versionOld: '1.6.659 (old)',
+    voteCompatible: 'Compatible',
+    voteIncompatible: 'Incompatible',
+    communityVotes: 'Community votes:',
+    voteSaved: 'Vote saved',
   },
 };
 
@@ -59,7 +74,9 @@ var reasonMap = {
   'Ймовірно несумісний': { ua: 'Ймовірно несумісний', en: 'Likely incompatible' },
   'Підтверджено GOG-сумісність': { ua: 'Підтверджено GOG-сумісність', en: 'GOG compatibility confirmed' },
   'Версійно-залежний — платформа не вказана': { ua: 'Версійно-залежний — платформа не вказана', en: 'Version-dependent — platform not specified' },
+  'Версійно-залежний — файли для іншої версії гри': { ua: 'Версійно-залежний — файли для іншої версії гри', en: 'Version-dependent — files for different game version' },
   'Можливо сумісний': { ua: 'Можливо сумісний', en: 'Possibly compatible' },
+  'Можливо сумісний — через залежність': { ua: 'Можливо сумісний — через залежність', en: 'Possibly compatible — via dependency' },
   'Немає інформації про платформу': { ua: 'Немає інформації про платформу', en: 'No platform info' },
   'Сумісний — через залежність від GOG-сумісного моду': { ua: 'Сумісний — через залежність від GOG-сумісного моду', en: 'Compatible — via GOG-compatible dependency' },
 };
@@ -68,7 +85,20 @@ var noteMap = {
   'Залежності:': { ua: 'Залежності:', en: 'Dependencies:' },
   'Версійно-залежний:': { ua: 'Версійно-залежний:', en: 'Version-dependent:' },
   'Залежить від GOG-сумісного:': { ua: 'Залежить від GOG-сумісного:', en: 'Depends on GOG-compatible:' },
+  'Залежить від можливо сумісного:': { ua: 'Залежить від можливо сумісного:', en: 'Depends on possibly compatible:' },
 };
+
+var evidenceMap = [
+  { prefix: 'Залежність згадує GOG:', en: 'Dependency mentions GOG:' },
+  { prefix: 'Файл містить GOG у назві:', en: 'File contains GOG in name:' },
+  { prefix: 'Знайдено', en: 'Found', suffix: 'у тексті мода', enSuffix: 'in mod text' },
+  { prefix: 'Тег мода:', en: 'Mod tags:' },
+  { prefix: 'Залежність', en: 'Dependency', suffix: 'сумісна з GOG', enSuffix: 'is GOG-compatible' },
+  { prefix: 'Залежність', en: 'Dependency', suffix: 'можливо сумісна з GOG', enSuffix: 'is possibly GOG-compatible' },
+  { prefix: 'SKSE-плагін не оновлювався', en: 'SKSE plugin not updated for', suffix: '(останнє оновлення:', enSuffix: '(last updated:' },
+  { prefix: 'SKSE-плагін оновлено', en: 'SKSE plugin last updated' },
+  { prefix: 'Файли призначені для версії', en: 'Files designed for version', suffix: '(поточна:', enSuffix: '(current:' },
+];
 
 var currentLang = localStorage.getItem(LANG_STORAGE) || 'ua';
 var lastResults = null;
@@ -96,6 +126,26 @@ function translateNote(note) {
   return note;
 }
 
+function translateEvidence(text) {
+  if (currentLang === 'ua') return text;
+  for (var i = 0; i < evidenceMap.length; i++) {
+    var rule = evidenceMap[i];
+    if (rule.suffix) {
+      var prefixIdx = text.indexOf(rule.prefix);
+      var suffixIdx = text.indexOf(rule.suffix);
+      if (prefixIdx === 0 && suffixIdx > rule.prefix.length) {
+        var dynamicPart = text.substring(rule.prefix.length, suffixIdx);
+        return rule.en + dynamicPart + rule.enSuffix;
+      }
+    } else {
+      if (text.indexOf(rule.prefix) === 0) {
+        return rule.en + text.substring(rule.prefix.length);
+      }
+    }
+  }
+  return text;
+}
+
 function renderCard(mod) {
   var thumb = mod.picture_url
     ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
@@ -105,7 +155,7 @@ function renderCard(mod) {
   if (mod.evidence && mod.evidence.length) {
     evidenceHtml = '<div class="compat-evidence">';
     for (var i = 0; i < mod.evidence.length; i++) {
-      evidenceHtml += '<div class="compat-evidence-item">• ' + esc(mod.evidence[i]) + '</div>';
+      evidenceHtml += '<div class="compat-evidence-item">• ' + esc(translateEvidence(mod.evidence[i])) + '</div>';
     }
     evidenceHtml += '</div>';
   }
@@ -119,7 +169,20 @@ function renderCard(mod) {
     notesHtml += '</div>';
   }
 
-  return '<div class="mod-card card-' + esc(mod.status) + '">' +
+  var votes = mod.userVotes || { compatible: 0, incompatible: 0 };
+  var totalVotes = votes.compatible + votes.incompatible;
+  var voteHtml = '<div class="vote-section">' +
+    '<div class="vote-buttons">' +
+    '<button class="vote-btn vote-yes" onclick="submitVote(' + mod.id + ', 1, this)" title="' + esc(t('voteCompatible')) + '">' +
+      '👍 <span class="vote-count">' + votes.compatible + '</span>' +
+    '</button>' +
+    '<button class="vote-btn vote-no" onclick="submitVote(' + mod.id + ', -1, this)" title="' + esc(t('voteIncompatible')) + '">' +
+      '👎 <span class="vote-count">' + votes.incompatible + '</span>' +
+    '</button>' +
+    '</div>' +
+    '</div>';
+
+  return '<div class="mod-card card-' + esc(mod.status) + '" data-mod-id="' + mod.id + '">' +
     '<div class="card-left">' + thumb + '</div>' +
     '<div class="card-right">' +
     '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
@@ -129,11 +192,42 @@ function renderCard(mod) {
       '<span class="compat-reason-text">' + esc(translateReason(mod.reason)) + '</span>' +
       '<span class="compat-expand-hint">▼</span>' +
     '</div>' +
+    voteHtml +
     '<div class="compat-details">' +
       evidenceHtml +
       notesHtml +
     '</div>' +
-    '</div></div>';
+      '</div></div>';
+}
+
+function submitVote(modId, vote, btnEl) {
+  var apiKey = localStorage.getItem(KEY_STORAGE);
+  if (!apiKey) return;
+
+  var version = document.getElementById('versionSelect').value;
+  var card = btnEl.closest('.mod-card');
+  var btns = card.querySelectorAll('.vote-btn');
+
+  fetch(WORKER_URL + '/vote', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'APIKEY': apiKey },
+    body: JSON.stringify({ modId: modId, vote: vote, version: version }),
+  })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      var yesBtn = card.querySelector('.vote-yes .vote-count');
+      var noBtn = card.querySelector('.vote-no .vote-count');
+      if (yesBtn) yesBtn.textContent = data.compatible || 0;
+      if (noBtn) noBtn.textContent = data.incompatible || 0;
+
+      btns.forEach(function (b) { b.classList.remove('vote-active'); });
+      if (vote === 1) {
+        card.querySelector('.vote-yes').classList.add('vote-active');
+      } else {
+        card.querySelector('.vote-no').classList.add('vote-active');
+      }
+    })
+    .catch(function () {});
 }
 
 function renderResults(data) {
@@ -169,6 +263,10 @@ function updateUI() {
   document.getElementById('searchInput').placeholder = t('searchPlaceholder');
   document.getElementById('searchBtn').textContent = t('searchBtn');
   document.getElementById('footerText').innerHTML = t('footer');
+  document.getElementById('versionLabel').textContent = t('versionLabel');
+  var vSelect = document.getElementById('versionSelect');
+  vSelect.options[0].text = t('versionCurrent');
+  vSelect.options[1].text = t('versionOld');
   if (lastResults) renderResults(lastResults);
 }
 
@@ -177,6 +275,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var savedKey = localStorage.getItem(KEY_STORAGE);
   if (savedKey) showApp();
+
+  var savedVersion = localStorage.getItem(VERSION_STORAGE);
+  if (savedVersion) {
+    document.getElementById('versionSelect').value = savedVersion;
+  }
 
   document.getElementById('langBtn').addEventListener('click', function () {
     currentLang = currentLang === 'ua' ? 'en' : 'ua';
@@ -235,7 +338,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('results').innerHTML = '<div class="spinner"></div>';
     document.getElementById('searchBtn').disabled = true;
 
-    fetch(WORKER_URL + '/check?name=' + encodeURIComponent(query), {
+    var version = document.getElementById('versionSelect').value;
+    localStorage.setItem(VERSION_STORAGE, version);
+
+    fetch(WORKER_URL + '/check?name=' + encodeURIComponent(query) + '&version=' + encodeURIComponent(version), {
       headers: { 'APIKEY': localStorage.getItem(KEY_STORAGE) },
     })
       .then(function (res) {
