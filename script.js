@@ -103,9 +103,9 @@ function renderCard(mod) {
 
   var notesHtml = '';
   if (mod.notes && mod.notes.length) {
-    notesHtml = '<div class="mod-notes">';
+    notesHtml = '<div class="compat-notes">';
     for (var j = 0; j < mod.notes.length; j++) {
-      notesHtml += '<div class="note">' + esc(translateNote(mod.notes[j])) + '</div>';
+      notesHtml += '<div class="compat-note">' + esc(translateNote(mod.notes[j])) + '</div>';
     }
     notesHtml += '</div>';
   }
@@ -116,8 +116,14 @@ function renderCard(mod) {
     '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
     '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
     '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
-    '<div class="compat-reason ' + esc(mod.status) + '">' + esc(translateReason(mod.reason)) + '</div>' +
-    notesHtml +
+    '<div class="compat-reason ' + esc(mod.status) + '" onclick="this.parentElement.parentElement.classList.toggle(\'show-details\')">' +
+      '<span class="compat-reason-text">' + esc(translateReason(mod.reason)) + '</span>' +
+      '<span class="compat-expand-hint">▼</span>' +
+    '</div>' +
+    '<div class="compat-details">' +
+      '<div class="compat-detail-reason">' + esc(translateReason(mod.reason)) + '</div>' +
+      notesHtml +
+    '</div>' +
     '</div></div>';
 }
 
