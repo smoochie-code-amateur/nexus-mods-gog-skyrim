@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GOG Skyrim Mod Checker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>GOG Skyrim Mod Checker</h1>
+      <p>Перевірка сумісності модів Nexus Mods із GOG-версією Skyrim SE</p>
+    </header>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Назва мода або Nexus ID..." autofocus>
+      <button id="searchBtn">Перевірити</button>
+    </div>
+
+    <div id="results"></div>
+    <div id="error" class="hidden"></div>
+  </div>
+
+  <footer>
+    <p>Дані з <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a> через Cloudflare Worker</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
