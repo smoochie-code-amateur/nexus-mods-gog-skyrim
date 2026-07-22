@@ -57,7 +57,7 @@ var translations = {
 
 var reasonMap = {
   'Ймовірно несумісний': { ua: 'Ймовірно несумісний', en: 'Likely incompatible' },
-  'Підтверджено GOG-сумісність': { ua: 'Підтверджено GOG-сумісність', en: 'GOG compatible' },
+  'Підтверджено GOG-сумісність': { ua: 'Підтверджено GOG-сумісність', en: 'GOG compatibility confirmed' },
   'Версійно-залежний — платформа не вказана': { ua: 'Версійно-залежний — платформа не вказана', en: 'Version-dependent — platform not specified' },
   'Можливо сумісний': { ua: 'Можливо сумісний', en: 'Possibly compatible' },
   'Немає інформації про платформу': { ua: 'Немає інформації про платформу', en: 'No platform info' },
@@ -70,22 +70,8 @@ var noteMap = {
   'Залежить від GOG-сумісного:': { ua: 'Залежить від GOG-сумісного:', en: 'Depends on GOG-compatible:' },
 };
 
-function translateReason(reason) {
-  if (reasonMap[reason]) return reasonMap[reason][currentLang] || reason;
-  return reason;
-}
-
-function translateNote(note) {
-  for (var key in noteMap) {
-    if (note.indexOf(key) === 0) {
-      var rest = note.substring(key.length);
-      return noteMap[key][currentLang] + rest;
-    }
-  }
-  return note;
-}
-
 var currentLang = localStorage.getItem(LANG_STORAGE) || 'ua';
+var lastResults = null;
 
 function t(key) {
   return translations[currentLang][key] || translations['ua'][key] || key;
@@ -96,7 +82,72 @@ function esc(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
-var lastResults = null;
+function translateReason(reason) {
+  if (reasonMap[reason]) return reasonMap[reason][currentLang] || reason;
+  return reason;
+}
+
+function translateNote(note) {
+  for (var key in noteMap) {
+    if (note.indexOf(key) === 0) {
+      return noteMap[key][currentLang] + note.substring(key.length);
+    }
+  }
+  return note;
+}
+
+function renderCard(mod) {
+  var thumb = mod.picture_url
+    ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
+    : '<div class="mod-thumb-fallback">⚔</div>';
+
+  var tagsHtml = '';
+  if (mod.tags && mod.tags.length) {
+    tagsHtml = '<div class="mod-tags">';
+    for (var i = 0; i < mod.tags.length; i++) {
+      tagsHtml += '<span class="tag">' + esc(mod.tags[i]) + '</span>';
+    }
+    tagsHtml += '</div>';
+  }
+
+  var notesHtml = '';
+  if (mod.notes && mod.notes.length) {
+    notesHtml = '<div class="mod-notes">';
+    for (var j = 0; j < mod.notes.length; j++) {
+      notesHtml += '<div class="note">' + esc(translateNote(mod.notes[j])) + '</div>';
+    }
+    notesHtml += '</div>';
+  }
+
+  return '<div class="mod-card card-' + esc(mod.status) + '">' +
+    '<div class="card-left">' + thumb + '</div>' +
+    '<div class="card-right">' +
+    '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
+    '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
+    '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
+    '<div class="compat-reason ' + esc(mod.status) + '">' + esc(translateReason(mod.reason)) + '</div>' +
+    tagsHtml + notesHtml +
+    '</div></div>';
+}
+
+function renderResults(data) {
+  lastResults = data;
+  var el = document.getElementById('results');
+  if (!el) return;
+  if (data.results && data.results.length > 0) {
+    el.innerHTML = data.results.map(renderCard).join('');
+  } else {
+    el.innerHTML =
+      '<div class="empty-state"><h2>' + (data.message || t('notFound')) + '</h2><p>' + t('tryOther') + '</p></div>';
+  }
+}
+
+function showError(msg) {
+  var el = document.getElementById('error');
+  var res = document.getElementById('results');
+  if (el) { el.textContent = msg; el.classList.remove('hidden'); }
+  if (res) res.innerHTML = '';
+}
 
 function updateUI() {
   document.getElementById('langBtn').textContent = currentLang === 'ua' ? 'EN' : 'UA';
@@ -211,55 +262,5 @@ document.addEventListener('DOMContentLoaded', function () {
       .finally(function () {
         document.getElementById('searchBtn').disabled = false;
       });
-  }
-
-  function renderResults(data) {
-    lastResults = data;
-    if (data.results && data.results.length > 0) {
-      document.getElementById('results').innerHTML = data.results.map(renderCard).join('');
-    } else {
-      document.getElementById('results').innerHTML =
-        '<div class="empty-state"><h2>' + (data.message || t('notFound')) + '</h2><p>' + t('tryOther') + '</p></div>';
-    }
-  }
-
-  function renderCard(mod) {
-    var thumb = mod.picture_url
-      ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
-      : '<div class="mod-thumb-fallback">⚔</div>';
-
-    var tagsHtml = '';
-    if (mod.tags && mod.tags.length) {
-      tagsHtml = '<div class="mod-tags">';
-      for (var i = 0; i < mod.tags.length; i++) {
-        tagsHtml += '<span class="tag">' + esc(mod.tags[i]) + '</span>';
-      }
-      tagsHtml += '</div>';
-    }
-
-    var notesHtml = '';
-    if (mod.notes && mod.notes.length) {
-      notesHtml = '<div class="mod-notes">';
-      for (var j = 0; j < mod.notes.length; j++) {
-        notesHtml += '<div class="note">' + esc(translateNote(mod.notes[j])) + '</div>';
-      }
-      notesHtml += '</div>';
-    }
-
-    return '<div class="mod-card card-' + esc(mod.status) + '">' +
-      '<div class="card-left">' + thumb + '</div>' +
-      '<div class="card-right">' +
-      '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
-      '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
-      '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
-      '<div class="compat-reason ' + esc(mod.status) + '">' + esc(translateReason(mod.reason)) + '</div>' +
-      tagsHtml + notesHtml +
-      '</div></div>';
-  }
-
-  function showError(msg) {
-    document.getElementById('error').textContent = msg;
-    document.getElementById('error').classList.remove('hidden');
-    document.getElementById('results').innerHTML = '';
   }
 });
