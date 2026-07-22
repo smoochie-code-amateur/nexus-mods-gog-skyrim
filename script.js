@@ -100,11 +100,13 @@ var evidenceMap = [
   { prefix: 'Файли призначені для версії', en: 'Files designed for version', suffix: '(поточна:', enSuffix: '(current:' },
 ];
 
-var currentLang = localStorage.getItem(LANG_STORAGE) || 'ua';
+var currentLang = localStorage.getItem(LANG_STORAGE);
+if (currentLang !== 'ua' && currentLang !== 'en') currentLang = 'ua';
 var lastResults = null;
 
 function t(key) {
-  return translations[currentLang][key] || translations['ua'][key] || key;
+  var lang = translations[currentLang] ? currentLang : 'ua';
+  return (translations[lang] && translations[lang][key]) || translations['ua'][key] || key;
 }
 
 function esc(str) {
@@ -271,16 +273,6 @@ function updateUI() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  updateUI();
-
-  var savedKey = localStorage.getItem(KEY_STORAGE);
-  if (savedKey) showApp();
-
-  var savedVersion = localStorage.getItem(VERSION_STORAGE);
-  if (savedVersion) {
-    document.getElementById('versionSelect').value = savedVersion;
-  }
-
   document.getElementById('langBtn').addEventListener('click', function () {
     currentLang = currentLang === 'ua' ? 'en' : 'ua';
     localStorage.setItem(LANG_STORAGE, currentLang);
@@ -321,6 +313,16 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('searchInput').addEventListener('keydown', function (e) {
     if (e.key === 'Enter') handleSearch();
   });
+
+  var savedVersion = localStorage.getItem(VERSION_STORAGE);
+  if (savedVersion) {
+    document.getElementById('versionSelect').value = savedVersion;
+  }
+
+  try { updateUI(); } catch (e) { console.error('updateUI failed:', e); }
+
+  var savedKey = localStorage.getItem(KEY_STORAGE);
+  if (savedKey) showApp();
 
   function showApp() {
     document.getElementById('keyView').classList.add('hidden');
