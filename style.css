@@ -37,6 +37,118 @@ header p {
   font-size: 14px;
 }
 
+.key-box {
+  text-align: center;
+  padding: 48px 32px;
+  background: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 12px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.key-box h2 {
+  font-size: 20px;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.key-box p {
+  font-size: 14px;
+  color: #a1a1aa;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.key-box a {
+  color: #6366f1;
+  text-decoration: none;
+}
+
+.key-link {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  border-radius: 6px;
+  background: #da8c3c;
+  color: #ffffff !important;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.key-link:hover {
+  background: #c47a2e;
+}
+
+.key-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.key-input-row input {
+  flex: 1;
+  padding: 12px 16px;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  background: #1a1b1e;
+  color: #e4e4e7;
+  font-size: 14px;
+  font-family: monospace;
+  outline: none;
+}
+
+.key-input-row input:focus {
+  border-color: #6366f1;
+}
+
+.key-input-row button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.key-input-row button:hover {
+  background: #4f46e5;
+}
+
+#keyError {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: rgba(220, 53, 69, 0.1);
+  border: 1px solid rgba(220, 53, 69, 0.3);
+  color: #f87171;
+  font-size: 13px;
+}
+
+.key-info {
+  text-align: center;
+  font-size: 13px;
+  color: #71717a;
+  margin-bottom: 24px;
+}
+
+.key-info button {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.key-info button:hover {
+  color: #818cf8;
+}
+
 .search-box {
   display: flex;
   gap: 10px;
@@ -177,6 +289,36 @@ header p {
 .compat-reason.unknown {
   background: rgba(108, 117, 125, 0.15);
   color: #9ca3af;
+}
+
+.mod-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #3f3f46;
+  color: #a1a1aa;
+  white-space: nowrap;
+}
+
+.mod-notes {
+  margin-top: 6px;
+}
+
+.note {
+  font-size: 12px;
+  color: #a1a1aa;
+  line-height: 1.5;
+}
+
+.note:first-letter {
+  text-transform: uppercase;
 }
 
 .spinner {
