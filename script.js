@@ -1,4 +1,4 @@
-const WORKER_URL = 'https://gog-skyrim-checker.YOUR_SUBDOMAIN.workers.dev';
+const WORKER_URL = 'https://nexus-api.nitanaredleaf.workers.dev';
 const KEY_STORAGE = 'nexus_api_key';
 
 const keyView = document.getElementById('keyView');
