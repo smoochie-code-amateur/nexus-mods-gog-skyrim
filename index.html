@@ -13,17 +13,40 @@
       <p>Перевірка сумісності модів Nexus Mods із GOG-версією Skyrim SE</p>
     </header>
 
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Назва мода або Nexus ID..." autofocus>
-      <button id="searchBtn">Перевірити</button>
+    <div id="keyView">
+      <div class="key-box">
+        <h2>Потрібен API-ключ Nexus Mods</h2>
+        <p>
+          Цей сайт використовує
+          <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a>
+          API для пошуку та перевірки модів. Введіть ваш особистий API-ключ.
+        </p>
+        <a class="key-link" href="https://www.nexusmods.com/users/myaccount?tab=api" target="_blank">
+          Отримати API-ключ →</a>
+        <div class="key-input-row">
+          <input type="text" id="keyInput" placeholder="API-ключ Nexus Mods...">
+          <button id="keyBtn">Зберегти</button>
+        </div>
+        <div id="keyError" class="hidden"></div>
+      </div>
     </div>
 
-    <div id="results"></div>
-    <div id="error" class="hidden"></div>
+    <div id="appView" class="hidden">
+      <div class="key-info">
+        Ключ збережено ·
+        <button id="changeKeyBtn">Змінити ключ</button>
+      </div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Назва мода або Nexus ID..." autofocus>
+        <button id="searchBtn">Перевірити</button>
+      </div>
+      <div id="results"></div>
+      <div id="error" class="hidden"></div>
+    </div>
   </div>
 
   <footer>
-    <p>Дані з <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a> через Cloudflare Worker</p>
+    <p>Дані з <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a></p>
   </footer>
 
   <script src="script.js"></script>
