@@ -17,7 +17,7 @@ body {
 }
 
 .container {
-  max-width: 700px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 32px 20px;
   flex: 1;
@@ -27,13 +27,6 @@ header {
   text-align: center;
   margin-bottom: 36px;
   position: relative;
-}
-
-.lang-switch {
-  position: absolute;
-  top: 60px;
-  right: 0;
-  z-index: 10;
 }
 
 .lang-switch button {
@@ -60,6 +53,13 @@ header {
   justify-content: center;
   gap: 16px;
   margin-bottom: 12px;
+  position: relative;
+}
+
+.lang-switch {
+  position: absolute;
+  right: 0;
+  z-index: 10;
 }
 
 .divider-ornate {
@@ -100,7 +100,7 @@ header h1 {
   text-align: center;
   padding: 40px 32px;
   background: rgba(14, 18, 30, 0.92);
-  border: 2px solid #6b6352;
+  border: none;
   max-width: 500px;
   margin: 0 auto;
   position: relative;
@@ -296,8 +296,8 @@ header h1 {
 .mod-card {
   background: rgba(14, 18, 30, 0.92);
   border: none;
-  padding: 18px 22px;
-  margin-bottom: 14px;
+  padding: 24px 28px;
+  margin-bottom: 16px;
   display: flex;
   gap: 16px;
   transition: all 0.3s;
@@ -319,24 +319,7 @@ header h1 {
 }
 
 .mod-card:hover {
-  border-color: #c8a24e;
   box-shadow: 0 0 25px rgba(200, 162, 78, 0.2);
-}
-
-.mod-card.card-yes {
-  border-left: 3px solid #2ecc71;
-}
-
-.mod-card.card-maybe {
-  border-left: 3px solid #f39c12;
-}
-
-.mod-card.card-no {
-  border-left: 3px solid #e74c3c;
-}
-
-.mod-card.card-unknown {
-  border-left: 3px solid #7f8c8d;
 }
 
 .card-left {
@@ -346,23 +329,23 @@ header h1 {
 }
 
 .mod-thumb {
-  width: 56px;
-  height: 56px;
+  width: 180px;
+  height: 240px;
   border-radius: 4px;
   border: 2px solid #c8a24e;
   object-fit: cover;
 }
 
 .mod-thumb-fallback {
-  width: 56px;
-  height: 56px;
+  width: 180px;
+  height: 240px;
   border-radius: 4px;
   border: 2px solid #c8a24e;
   background: #1a2035;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 48px;
   color: #c8a24e;
 }
 
@@ -374,47 +357,48 @@ header h1 {
 }
 
 .mod-name {
-  font-size: 19px;
+  font-family: 'Cinzel', serif;
+  font-size: 28px;
   font-weight: 700;
-  color: #e8dcc8;
+  color: #c8a24e;
   margin-bottom: 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 
 .mod-name a {
-  color: inherit;
+  color: #c8a24e;
   text-decoration: none;
-  transition: color 0.2s;
+  transition: all 0.2s;
 }
 
 .mod-name a:hover {
-  color: #c8a24e;
-  text-shadow: 0 0 10px rgba(200, 162, 78, 0.3);
+  color: #e8dcc8;
+  text-shadow: 0 0 15px rgba(200, 162, 78, 0.5);
 }
 
 .mod-meta {
-  font-size: 15px;
+  font-size: 17px;
   color: #8b7d6b;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
 }
 
 .mod-summary {
-  font-size: 15px;
-  color: #6b5f4f;
-  line-height: 1.5;
+  font-size: 16px;
+  color: #9a8e7c;
+  line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
 .compat-reason {
-  font-size: 14px;
-  margin-top: 8px;
-  padding: 5px 14px;
+  font-size: 16px;
+  margin-top: 12px;
+  padding: 8px 20px;
   display: inline-block;
   font-weight: 700;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
 }
 
 .compat-reason.yes {
@@ -441,10 +425,6 @@ header h1 {
   border: 1px solid rgba(127, 140, 141, 0.3);
 }
 
-.mod-tags {
-  display: none;
-}
-
 .tag {
   font-size: 13px;
   padding: 2px 10px;
@@ -455,12 +435,12 @@ header h1 {
 }
 
 .mod-notes {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .note {
-  font-size: 14px;
-  color: #8b7d6b;
+  font-size: 15px;
+  color: #a0937d;
   line-height: 1.6;
 }
 
