@@ -81,6 +81,10 @@ var reasonMap = {
   'Сумісний — через залежність від GOG-сумісного моду': { ua: 'Сумісний — через залежність від GOG-сумісного моду', en: 'Compatible — via GOG-compatible dependency' },
 };
 
+var reasonPrefixMap = [
+  { prefix: 'SKSE-плагін не оновлювався >1 року — можливо несумісний з ', en: 'SKSE plugin not updated >1 year — possibly incompatible with ' },
+];
+
 var noteMap = {
   'Залежності:': { ua: 'Залежності:', en: 'Dependencies:' },
   'Версійно-залежний:': { ua: 'Версійно-залежний:', en: 'Version-dependent:' },
@@ -116,6 +120,12 @@ function esc(str) {
 
 function translateReason(reason) {
   if (reasonMap[reason]) return reasonMap[reason][currentLang] || reason;
+  for (var i = 0; i < reasonPrefixMap.length; i++) {
+    var rule = reasonPrefixMap[i];
+    if (reason.indexOf(rule.prefix) === 0) {
+      return rule.en + reason.substring(rule.prefix.length);
+    }
+  }
   return reason;
 }
 
