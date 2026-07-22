@@ -4,7 +4,7 @@
 
 **SMC** — a simple tool to check if Nexus Mods mods are compatible with the GOG version of Skyrim SE.
 
-[🔗 Try it](https://smoochie-code-amateur.github.io/nexus-mods-gog-skyrim/)  |  [🇺🇦 Українська](README-ua.md)  |  [🔒 Privacy Policy](https://smoochie-code-amateur.github.io/nexus-mods-gog-skyrim/privacy.html)
+[🔗 Try it](https://smoochie-code-amateur.github.io/nexus-mods-gog-skyrim/)  |  [🔒 Privacy Policy](https://smoochie-code-amateur.github.io/nexus-mods-gog-skyrim/privacy.html)
 
 </div>
 
