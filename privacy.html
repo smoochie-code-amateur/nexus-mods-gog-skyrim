@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — GOG Skyrim Mod Checker</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@300;400;600;700&family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-area">
+        <div class="divider-ornate left"></div>
+        <h1 id="mainTitle">Privacy Policy</h1>
+        <div class="divider-ornate right"></div>
+        <div class="lang-switch">
+          <button id="langBtn" title="Switch language">EN</button>
+        </div>
+      </div>
+      <p class="subtitle" id="mainSubtitle">Як ми обробляємо ваші дані</p>
+    </header>
+
+    <div class="privacy-content" id="privacyContent">
+    </div>
+
+    <div class="privacy-back">
+      <a href="index.html" id="backLink">← Назад до головної</a>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-divider"></div>
+    <p id="footerText">Дані з <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a></p>
+    <p class="footer-links"><a href="index.html">← Головна</a></p>
+  </footer>
+
+  <script>
+    var LANG_STORAGE = 'nexus_lang';
+    var currentLang = localStorage.getItem(LANG_STORAGE);
+    if (currentLang !== 'ua' && currentLang !== 'en') currentLang = 'ua';
+
+    var content = {
+      ua: [
+        { type: 'h2', text: 'Що це за сайт' },
+        { type: 'p', text: 'GOG Skyrim Mod Checker — це інструмент, який допомагає визначити сумісність модів з Nexus Mods із GOG-версією Skyrim SE. Сайт не продає, не передає і не використовує ваші дані для реклами.' },
+        { type: 'h2', text: 'API-ключ Nexus Mods' },
+        { type: 'p', text: 'Для роботи сайту потрібен ваш особистий API-ключ Nexus Mods. Ось як він обробляється:' },
+        { type: 'ul', items: [
+          'Зберігається виключно у вашому браузері (localStorage)',
+          'Надсилається лише до нашого сервера (воркера на Cloudflare) для запитів до API Nexus Mods',
+          'Не зберігається на нашому сервері',
+          'Не передається третім сторонам',
+          'Не використовується для ідентифікації вашої особи'
+        ]},
+        { type: 'h2', text: 'Голосування (оцінки сумісності)' },
+        { type: 'p', text: 'Користувачі можуть голосувати за сумісність модів. Для цього зберігаються такі дані:' },
+        { type: 'ul', items: [
+          'Хеш (SHA-256) вашого API-ключа — використовується для запобігання повторним голосам. Хеш незворотний: з нього неможливо відновити API-ключ або визначити вашу особу',
+          'ID мода (mod_id) — для прив\'язки голосу до конкретного мода',
+          'Тип голосу (👍 або 👎)',
+          'Версія гри (game_version)',
+          'Час голосування'
+        ]},
+        { type: 'p', text: 'Хеш API-ключа необхідний для забезпечення fair voting: один акаунт Nexus Mods = один голос на мод для кожної версії гри.' },
+        { type: 'h2', text: 'Що НЕ зберігається' },
+        { type: 'ul', items: [
+          'IP-адреси',
+          'Історія пошуку та переглядів',
+          'Назви модів, які ви шукали',
+          'Cookies',
+          'Дані про ваш браузер чи пристрій',
+          'Будь-які персональні дані (ім\'я, email тощо)'
+        ]},
+        { type: 'h2', text: 'Треті сторони' },
+        { type: 'p', text: 'Сайт взаємодіє з такими зовнішніми сервісами:' },
+        { type: 'ul', items: [
+          'Nexus Mods API — для пошуку модів та отримання інформації про них',
+          'Cloudflare — для хостингу серверної частини (воркер) та статичних файлів (GitHub Pages)'
+        ]},
+        { type: 'p', text: 'Ні Nexus Mods, ні Cloudflare не отримують ваш API-ключ від нас. Запити до Nexus Mods проходять через наш воркер.' },
+        { type: 'h2', text: 'JavaScript та localStorage' },
+        { type: 'p', text: 'Сайт використовує localStorage для збереження:' },
+        { type: 'ul', items: [
+          'API-ключа Nexus Mods (за вашою згодою)',
+          'Обраної мови (UA/EN)',
+          'Обраної версії гри'
+        ]},
+        { type: 'p', text: 'Ви можете очистити localStorage в налаштуваннях браузера в будь-який момент. Після цього доведеться ввести API-ключ заново.' },
+        { type: 'h2', text: 'Зміни до політики' },
+        { type: 'p', text: 'Ця політика може бути оновлена. Дата останнього оновлення вказана нижче. Рекомендуємо періодично переглядати цю сторінку.' },
+        { type: 'h2', text: 'Контакти' },
+        { type: 'p', text: 'Якщо у вас є запитання щодо цієї політики, створіть issue на <a href="https://github.com/smoochie-code-amateur/nexus-mods-gog-skyrim" target="_blank">GitHub</a>.' },
+        { type: 'date', text: 'Останнє оновлення: 23 липня 2026 р.' },
+      ],
+      en: [
+        { type: 'h2', text: 'What is this site' },
+        { type: 'p', text: 'GOG Skyrim Mod Checker is a tool that helps determine the compatibility of Nexus Mods mods with the GOG version of Skyrim SE. The site does not sell, share, or use your data for advertising.' },
+        { type: 'h2', text: 'Nexus Mods API Key' },
+        { type: 'p', text: 'To use the site, your personal Nexus Mods API key is required. Here is how it is handled:' },
+        { type: 'ul', items: [
+          'Stored exclusively in your browser (localStorage)',
+          'Sent only to our server (Cloudflare worker) for Nexus Mods API requests',
+          'Not stored on our server',
+          'Not shared with third parties',
+          'Not used to identify you personally'
+        ]},
+        { type: 'h2', text: 'Voting (compatibility ratings)' },
+        { type: 'p', text: 'Users can vote on mod compatibility. The following data is stored:' },
+        { type: 'ul', items: [
+          'SHA-256 hash of your API key — used to prevent duplicate votes. The hash is one-way: it is impossible to restore the API key or identify you from it',
+          'Mod ID (mod_id) — to link the vote to a specific mod',
+          'Vote type (thumbs up or thumbs down)',
+          'Game version (game_version)',
+          'Vote timestamp'
+        ]},
+        { type: 'p', text: 'The API key hash is necessary to ensure fair voting: one Nexus Mods account = one vote per mod for each game version.' },
+        { type: 'h2', text: 'What is NOT stored' },
+        { type: 'ul', items: [
+          'IP addresses',
+          'Search and browsing history',
+          'Names of mods you searched for',
+          'Cookies',
+          'Browser or device data',
+          'Any personal data (name, email, etc.)'
+        ]},
+        { type: 'h2', text: 'Third parties' },
+        { type: 'p', text: 'The site interacts with the following external services:' },
+        { type: 'ul', items: [
+          'Nexus Mods API — for searching mods and retrieving their information',
+          'Cloudflare — for hosting the server-side (worker) and static files (GitHub Pages)'
+        ]},
+        { type: 'p', text: 'Neither Nexus Mods nor Cloudflare receive your API key from us. Requests to Nexus Mods are routed through our worker.' },
+        { type: 'h2', text: 'JavaScript and localStorage' },
+        { type: 'p', text: 'The site uses localStorage to store:' },
+        { type: 'ul', items: [
+          'Nexus Mods API key (with your consent)',
+          'Selected language (UA/EN)',
+          'Selected game version'
+        ]},
+        { type: 'p', text: 'You can clear localStorage in your browser settings at any time. You will need to enter your API key again after doing so.' },
+        { type: 'h2', text: 'Changes to this policy' },
+        { type: 'p', text: 'This policy may be updated. The date of the last update is listed below. We recommend reviewing this page periodically.' },
+        { type: 'h2', text: 'Contact' },
+        { type: 'p', text: 'If you have any questions about this policy, please create an issue on <a href="https://github.com/smoochie-code-amateur/nexus-mods-gog-skyrim" target="_blank">GitHub</a>.' },
+        { type: 'date', text: 'Last updated: July 23, 2026' },
+      ],
+    };
+
+    function renderContent() {
+      var items = content[currentLang] || content['ua'];
+      var html = '';
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        if (item.type === 'h2') {
+          html += '<h2 class="privacy-h2">' + item.text + '</h2>';
+        } else if (item.type === 'p') {
+          html += '<p class="privacy-p">' + item.text + '</p>';
+        } else if (item.type === 'date') {
+          html += '<p class="privacy-date">' + item.text + '</p>';
+        } else if (item.type === 'ul') {
+          html += '<ul class="privacy-ul">';
+          for (var j = 0; j < item.items.length; j++) {
+            html += '<li>' + item.items[j] + '</li>';
+          }
+          html += '</ul>';
+        }
+      }
+      document.getElementById('privacyContent').innerHTML = html;
+    }
+
+    function updateUI() {
+      document.getElementById('langBtn').textContent = currentLang === 'ua' ? 'EN' : 'UA';
+      document.getElementById('mainTitle').textContent = currentLang === 'ua' ? 'Політика конфіденційності' : 'Privacy Policy';
+      document.getElementById('mainSubtitle').textContent = currentLang === 'ua' ? 'Як ми обробляємо ваші дані' : 'How we handle your data';
+      document.getElementById('backLink').textContent = currentLang === 'ua' ? '← Назад до головної' : '← Back to main page';
+      document.getElementById('footerText').innerHTML = currentLang === 'ua'
+        ? 'Дані з <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a>'
+        : 'Data from <a href="https://www.nexusmods.com/skyrimspecialedition" target="_blank">Nexus Mods</a>';
+      renderContent();
+    }
+
+    document.getElementById('langBtn').addEventListener('click', function () {
+      currentLang = currentLang === 'ua' ? 'en' : 'ua';
+      localStorage.setItem(LANG_STORAGE, currentLang);
+      updateUI();
+    });
+
+    updateUI();
+  </script>
+</body>
+</html>
