@@ -55,6 +55,36 @@ var translations = {
   },
 };
 
+var reasonMap = {
+  'Ймовірно несумісний': { ua: 'Ймовірно несумісний', en: 'Likely incompatible' },
+  'Підтверджено GOG-сумісність': { ua: 'Підтверджено GOG-сумісність', en: 'GOG compatible' },
+  'Версійно-залежний — платформа не вказана': { ua: 'Версійно-залежний — платформа не вказана', en: 'Version-dependent — platform not specified' },
+  'Можливо сумісний': { ua: 'Можливо сумісний', en: 'Possibly compatible' },
+  'Немає інформації про платформу': { ua: 'Немає інформації про платформу', en: 'No platform info' },
+  'Сумісний — через залежність від GOG-сумісного моду': { ua: 'Сумісний — через залежність від GOG-сумісного моду', en: 'Compatible — via GOG-compatible dependency' },
+};
+
+var noteMap = {
+  'Залежності:': { ua: 'Залежності:', en: 'Dependencies:' },
+  'Версійно-залежний:': { ua: 'Версійно-залежний:', en: 'Version-dependent:' },
+  'Залежить від GOG-сумісного:': { ua: 'Залежить від GOG-сумісного:', en: 'Depends on GOG-compatible:' },
+};
+
+function translateReason(reason) {
+  if (reasonMap[reason]) return reasonMap[reason][currentLang] || reason;
+  return reason;
+}
+
+function translateNote(note) {
+  for (var key in noteMap) {
+    if (note.indexOf(key) === 0) {
+      var rest = note.substring(key.length);
+      return noteMap[key][currentLang] + rest;
+    }
+  }
+  return note;
+}
+
 var currentLang = localStorage.getItem(LANG_STORAGE) || 'ua';
 
 function t(key) {
@@ -66,6 +96,8 @@ function esc(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
+var lastResults = null;
+
 function updateUI() {
   document.getElementById('langBtn').textContent = currentLang === 'ua' ? 'EN' : 'UA';
   document.getElementById('mainTitle').textContent = t('title');
@@ -76,9 +108,11 @@ function updateUI() {
   document.getElementById('keyInput').placeholder = t('keyPlaceholder');
   document.getElementById('keyBtn').textContent = t('saveKey');
   document.getElementById('changeKeyBtn').textContent = t('changeKey');
+  document.getElementById('keySavedText').textContent = t('keySaved');
   document.getElementById('searchInput').placeholder = t('searchPlaceholder');
   document.getElementById('searchBtn').textContent = t('searchBtn');
   document.getElementById('footerText').innerHTML = t('footer');
+  if (lastResults) renderResults(lastResults);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -180,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function renderResults(data) {
+    lastResults = data;
     if (data.results && data.results.length > 0) {
       document.getElementById('results').innerHTML = data.results.map(renderCard).join('');
     } else {
@@ -206,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (mod.notes && mod.notes.length) {
       notesHtml = '<div class="mod-notes">';
       for (var j = 0; j < mod.notes.length; j++) {
-        notesHtml += '<div class="note">' + esc(mod.notes[j]) + '</div>';
+        notesHtml += '<div class="note">' + esc(translateNote(mod.notes[j])) + '</div>';
       }
       notesHtml += '</div>';
     }
@@ -217,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
       '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
       '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
-      '<div class="compat-reason ' + esc(mod.status) + '">' + esc(mod.reason) + '</div>' +
+      '<div class="compat-reason ' + esc(mod.status) + '">' + esc(translateReason(mod.reason)) + '</div>' +
       tagsHtml + notesHtml +
       '</div></div>';
   }
