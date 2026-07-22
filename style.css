@@ -11,10 +11,12 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
 .container {
-  max-width: 860px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 32px 20px;
   flex: 1;
@@ -38,7 +40,7 @@ header {
   border: 1px solid #c8a24e;
   color: #c8a24e;
   font-family: 'Alumni Sans', sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   padding: 6px 14px;
   cursor: pointer;
@@ -88,7 +90,7 @@ header h1 {
 
 .subtitle {
   color: #8b7d6b;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 300;
   letter-spacing: 1px;
 }
@@ -96,9 +98,9 @@ header h1 {
 .key-box {
   text-align: center;
   padding: 40px 32px;
-  background: linear-gradient(135deg, #141a2a 0%, #1a2035 50%, #141a2a 100%);
+  background: #141a2a;
   border: 2px solid #5a4a2a;
-  max-width: 560px;
+  max-width: 500px;
   margin: 0 auto;
   position: relative;
   overflow: hidden;
@@ -112,14 +114,14 @@ header h1 {
   right: 0;
   bottom: 0;
   background: url('assets/boxes/card-empty.png') no-repeat center;
-  background-size: 100% 100%;
-  opacity: 0.25;
+  background-size: contain;
+  opacity: 0.4;
   pointer-events: none;
 }
 
 .key-box h2 {
   font-family: 'Cinzel', serif;
-  font-size: 18px;
+  font-size: 20px;
   color: #c8a24e;
   margin-bottom: 12px;
   text-shadow: 0 1px 2px rgba(0,0,0,0.3);
@@ -128,7 +130,7 @@ header h1 {
 }
 
 .key-box p {
-  font-size: 14px;
+  font-size: 16px;
   color: #a0937d;
   line-height: 1.6;
   margin-bottom: 16px;
@@ -145,22 +147,21 @@ header h1 {
   display: inline-block;
   margin-bottom: 20px;
   padding: 14px 36px;
-  background: linear-gradient(180deg, #2a2318 0%, #1a1510 100%);
+  background: #2a2318;
   border: 1px solid #c8a24e;
   color: #e8dcc8 !important;
   font-family: 'Alumni Sans', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   letter-spacing: 1px;
   position: relative;
   z-index: 1;
 }
 
 .key-link:hover {
-  background: linear-gradient(180deg, #c8a24e 0%, #a08030 100%);
+  background: #c8a24e;
   color: #0a0e17 !important;
 }
 
@@ -178,7 +179,7 @@ header h1 {
   background: #0a0e17;
   color: #e8dcc8;
   font-family: 'Alumni Sans', monospace;
-  font-size: 14px;
+  font-size: 16px;
   outline: none;
   transition: border-color 0.2s;
 }
@@ -191,10 +192,10 @@ header h1 {
 .key-input-row button {
   padding: 12px 28px;
   border: 1px solid #c8a24e;
-  background: linear-gradient(180deg, #2a2318 0%, #1a1510 100%);
+  background: #2a2318;
   color: #c8a24e;
   font-family: 'Alumni Sans', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -203,7 +204,7 @@ header h1 {
 }
 
 .key-input-row button:hover {
-  background: linear-gradient(180deg, #c8a24e 0%, #a08030 100%);
+  background: #c8a24e;
   color: #0a0e17;
 }
 
@@ -213,13 +214,12 @@ header h1 {
   background: rgba(220, 53, 69, 0.1);
   border: 1px solid rgba(220, 53, 69, 0.3);
   color: #e74c3c;
-  font-size: 13px;
+  font-size: 15px;
 }
-
 
 .key-info {
   text-align: center;
-  font-size: 13px;
+  font-size: 15px;
   color: #8b7d6b;
   margin-bottom: 20px;
 }
@@ -229,7 +229,7 @@ header h1 {
   border: none;
   color: #c8a24e;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
   text-decoration: underline;
   font-family: 'Alumni Sans', sans-serif;
 }
@@ -251,7 +251,7 @@ header h1 {
   background: #0a0e17;
   color: #e8dcc8;
   font-family: 'Alumni Sans', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
@@ -268,10 +268,10 @@ header h1 {
 .search-box button {
   padding: 14px 36px;
   border: 1px solid #c8a24e;
-  background: linear-gradient(180deg, #2a2318 0%, #1a1510 100%);
+  background: #2a2318;
   color: #c8a24e;
   font-family: 'Alumni Sans', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
@@ -281,7 +281,7 @@ header h1 {
 }
 
 .search-box button:hover {
-  background: linear-gradient(180deg, #c8a24e 0%, #a08030 100%);
+  background: #c8a24e;
   color: #0a0e17;
 }
 
@@ -293,10 +293,10 @@ header h1 {
 }
 
 .mod-card {
-  background: linear-gradient(135deg, #141a2a 0%, #1a2035 50%, #141a2a 100%);
+  background: #141a2a;
   border: 1px solid #5a4a2a;
-  padding: 16px 20px;
-  margin-bottom: 12px;
+  padding: 18px 22px;
+  margin-bottom: 14px;
   display: flex;
   gap: 16px;
   transition: all 0.3s;
@@ -312,8 +312,8 @@ header h1 {
   right: 0;
   bottom: 0;
   background: url('assets/boxes/card-empty.png') no-repeat center;
-  background-size: 100% 100%;
-  opacity: 0.3;
+  background-size: contain;
+  opacity: 0.35;
   pointer-events: none;
 }
 
@@ -357,7 +357,7 @@ header h1 {
   height: 56px;
   border-radius: 4px;
   border: 2px solid #c8a24e;
-  background: linear-gradient(135deg, #1a2035 0%, #0a0e17 100%);
+  background: #1a2035;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -373,7 +373,7 @@ header h1 {
 }
 
 .mod-name {
-  font-size: 17px;
+  font-size: 19px;
   font-weight: 700;
   color: #e8dcc8;
   margin-bottom: 4px;
@@ -391,15 +391,15 @@ header h1 {
 }
 
 .mod-meta {
-  font-size: 13px;
+  font-size: 15px;
   color: #8b7d6b;
   margin-bottom: 6px;
 }
 
 .mod-summary {
-  font-size: 13px;
+  font-size: 15px;
   color: #6b5f4f;
-  line-height: 1.4;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -407,9 +407,9 @@ header h1 {
 }
 
 .compat-reason {
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 8px;
-  padding: 4px 12px;
+  padding: 5px 14px;
   display: inline-block;
   font-weight: 700;
   letter-spacing: 0.5px;
@@ -448,8 +448,8 @@ header h1 {
 }
 
 .tag {
-  font-size: 11px;
-  padding: 2px 8px;
+  font-size: 13px;
+  padding: 2px 10px;
   background: #2a2318;
   border: 1px solid #3d3525;
   color: #a0937d;
@@ -457,13 +457,13 @@ header h1 {
 }
 
 .mod-notes {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .note {
-  font-size: 12px;
+  font-size: 14px;
   color: #8b7d6b;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .note:first-letter {
@@ -485,7 +485,6 @@ header h1 {
   background-size: contain;
 }
 
-
 .empty-state {
   text-align: center;
   padding: 60px 20px;
@@ -494,11 +493,10 @@ header h1 {
 
 .empty-state h2 {
   font-family: 'Cinzel', serif;
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 8px;
   color: #8b7d6b;
 }
-
 
 .hidden {
   display: none !important;
@@ -510,14 +508,14 @@ header h1 {
   padding: 12px 16px;
   color: #e74c3c;
   margin-top: 12px;
+  font-size: 16px;
 }
-
 
 footer {
   text-align: center;
   padding: 24px 20px;
   color: #6b5f4f;
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .footer-divider {
@@ -555,7 +553,6 @@ footer a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #c8a24e 0%, #a08030 100%);
 }
-
 
 ::selection {
   background: #c8a24e;
