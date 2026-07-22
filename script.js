@@ -150,7 +150,7 @@ function translateEvidence(text) {
 
 function renderCard(mod) {
   var thumb = mod.picture_url
-    ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
+    ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" data-fallback="true"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
     : '<div class="mod-thumb-fallback">⚔</div>';
 
   var evidenceHtml = '';
@@ -172,13 +172,12 @@ function renderCard(mod) {
   }
 
   var votes = mod.userVotes || { compatible: 0, incompatible: 0 };
-  var totalVotes = votes.compatible + votes.incompatible;
   var voteHtml = '<div class="vote-section">' +
     '<div class="vote-buttons">' +
-    '<button class="vote-btn vote-yes" onclick="submitVote(' + mod.id + ', 1, this)" title="' + esc(t('voteCompatible')) + '">' +
+    '<button class="vote-btn vote-yes" data-mod-id="' + mod.id + '" data-vote="1" title="' + esc(t('voteCompatible')) + '">' +
       '👍 <span class="vote-count">' + votes.compatible + '</span>' +
     '</button>' +
-    '<button class="vote-btn vote-no" onclick="submitVote(' + mod.id + ', -1, this)" title="' + esc(t('voteIncompatible')) + '">' +
+    '<button class="vote-btn vote-no" data-mod-id="' + mod.id + '" data-vote="-1" title="' + esc(t('voteIncompatible')) + '">' +
       '👎 <span class="vote-count">' + votes.incompatible + '</span>' +
     '</button>' +
     '</div>' +
@@ -190,7 +189,7 @@ function renderCard(mod) {
     '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
     '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
     '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
-    '<div class="compat-reason ' + esc(mod.status) + '" onclick="this.parentElement.parentElement.classList.toggle(\'show-details\')">' +
+    '<div class="compat-reason ' + esc(mod.status) + '">' +
       '<span class="compat-reason-text">' + esc(translateReason(mod.reason)) + '</span>' +
       '<span class="compat-expand-hint">▼</span>' +
     '</div>' +
@@ -210,6 +209,9 @@ function submitVote(modId, vote, btnEl) {
   var card = btnEl.closest('.mod-card');
   var btns = card.querySelectorAll('.vote-btn');
 
+  btns.forEach(function (b) { b.classList.remove('vote-active'); });
+  btnEl.classList.add('vote-active');
+
   fetch(WORKER_URL + '/vote', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'APIKEY': apiKey },
@@ -221,15 +223,10 @@ function submitVote(modId, vote, btnEl) {
       var noBtn = card.querySelector('.vote-no .vote-count');
       if (yesBtn) yesBtn.textContent = data.compatible || 0;
       if (noBtn) noBtn.textContent = data.incompatible || 0;
-
-      btns.forEach(function (b) { b.classList.remove('vote-active'); });
-      if (vote === 1) {
-        card.querySelector('.vote-yes').classList.add('vote-active');
-      } else {
-        card.querySelector('.vote-no').classList.add('vote-active');
-      }
     })
-    .catch(function () {});
+    .catch(function () {
+      btnEl.classList.remove('vote-active');
+    });
 }
 
 function renderResults(data) {
@@ -318,6 +315,26 @@ document.addEventListener('DOMContentLoaded', function () {
   if (savedVersion) {
     document.getElementById('versionSelect').value = savedVersion;
   }
+
+  document.getElementById('results').addEventListener('click', function (e) {
+    var voteBtn = e.target.closest('.vote-btn');
+    if (voteBtn) {
+      submitVote(parseInt(voteBtn.dataset.modId, 10), parseInt(voteBtn.dataset.vote, 10), voteBtn);
+      return;
+    }
+    var reasonEl = e.target.closest('.compat-reason');
+    if (reasonEl) {
+      reasonEl.parentElement.parentElement.classList.toggle('show-details');
+    }
+  });
+
+  document.getElementById('results').addEventListener('error', function (e) {
+    if (e.target.tagName === 'IMG' && e.target.dataset.fallback) {
+      e.target.style.display = 'none';
+      var fb = e.target.nextElementSibling;
+      if (fb) fb.style.display = 'flex';
+    }
+  }, true);
 
   try { updateUI(); } catch (e) { console.error('updateUI failed:', e); }
 
