@@ -101,15 +101,6 @@ function renderCard(mod) {
     ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
     : '<div class="mod-thumb-fallback">⚔</div>';
 
-  var tagsHtml = '';
-  if (mod.tags && mod.tags.length) {
-    tagsHtml = '<div class="mod-tags">';
-    for (var i = 0; i < mod.tags.length; i++) {
-      tagsHtml += '<span class="tag">' + esc(mod.tags[i]) + '</span>';
-    }
-    tagsHtml += '</div>';
-  }
-
   var notesHtml = '';
   if (mod.notes && mod.notes.length) {
     notesHtml = '<div class="mod-notes">';
@@ -126,7 +117,7 @@ function renderCard(mod) {
     '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
     '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
     '<div class="compat-reason ' + esc(mod.status) + '">' + esc(translateReason(mod.reason)) + '</div>' +
-    tagsHtml + notesHtml +
+    notesHtml +
     '</div></div>';
 }
 
