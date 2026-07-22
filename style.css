@@ -6,7 +6,7 @@
 
 body {
   cursor: url('assets/cursor.png') 0 0, auto;
-  font-family: 'Google Sans', 'Segoe UI', sans-serif;
+  font-family: 'Google Sans', 'Alumni Sans', 'Segoe UI', sans-serif;
   background: #0a0e17;
   color: #e8dcc8;
   min-height: 100vh;
@@ -40,7 +40,7 @@ header {
   background: transparent;
   border: 1px solid #c8a24e;
   color: #c8a24e;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   font-size: 15px;
   font-weight: 700;
   padding: 6px 14px;
@@ -151,7 +151,7 @@ header h1 {
   background: #2a2318;
   border: 1px solid #c8a24e;
   color: #e8dcc8 !important;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   font-size: 16px;
   font-weight: 700;
   text-decoration: none;
@@ -179,7 +179,7 @@ header h1 {
   border: 1px solid #3d3525;
   background: #0a0e17;
   color: #e8dcc8;
-  font-family: 'Alumni Sans', monospace;
+  font-family: 'Google Sans', monospace;
   font-size: 16px;
   outline: none;
   transition: border-color 0.2s;
@@ -195,7 +195,7 @@ header h1 {
   border: 1px solid #c8a24e;
   background: #2a2318;
   color: #c8a24e;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   font-size: 16px;
   font-weight: 700;
   cursor: url('assets/cursor.png') 0 0, pointer;
@@ -232,7 +232,7 @@ header h1 {
   cursor: url('assets/cursor.png') 0 0, pointer;
   font-size: 15px;
   text-decoration: underline;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
 }
 
 .key-info button:hover {
@@ -251,7 +251,7 @@ header h1 {
   border: 1px solid #3d3525;
   background: #0a0e17;
   color: #e8dcc8;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   font-size: 18px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -271,7 +271,7 @@ header h1 {
   border: 1px solid #c8a24e;
   background: #2a2318;
   color: #c8a24e;
-  font-family: 'Alumni Sans', sans-serif;
+  font-family: 'Google Sans', sans-serif;
   font-size: 18px;
   font-weight: 700;
   cursor: url('assets/cursor.png') 0 0, pointer;
@@ -295,7 +295,7 @@ header h1 {
 
 .mod-card {
   background: rgba(14, 18, 30, 0.92);
-  border: 1px solid #6b6352;
+  border: none;
   padding: 18px 22px;
   margin-bottom: 14px;
   display: flex;
@@ -442,10 +442,7 @@ header h1 {
 }
 
 .mod-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin-top: 8px;
+  display: none;
 }
 
 .tag {
