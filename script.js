@@ -101,6 +101,15 @@ function renderCard(mod) {
     ? '<img src="' + esc(mod.picture_url) + '" class="mod-thumb" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="mod-thumb-fallback" style="display:none">⚔</div>'
     : '<div class="mod-thumb-fallback">⚔</div>';
 
+  var evidenceHtml = '';
+  if (mod.evidence && mod.evidence.length) {
+    evidenceHtml = '<div class="compat-evidence">';
+    for (var i = 0; i < mod.evidence.length; i++) {
+      evidenceHtml += '<div class="compat-evidence-item">• ' + esc(mod.evidence[i]) + '</div>';
+    }
+    evidenceHtml += '</div>';
+  }
+
   var notesHtml = '';
   if (mod.notes && mod.notes.length) {
     notesHtml = '<div class="compat-notes">';
@@ -121,7 +130,7 @@ function renderCard(mod) {
       '<span class="compat-expand-hint">▼</span>' +
     '</div>' +
     '<div class="compat-details">' +
-      '<div class="compat-detail-reason">' + esc(translateReason(mod.reason)) + '</div>' +
+      evidenceHtml +
       notesHtml +
     '</div>' +
     '</div></div>';
