@@ -35,6 +35,8 @@ var translations = {
     voteIncompatible: 'Несумісний',
     communityVotes: 'Голоси спільноти:',
     voteSaved: 'Голос збережено',
+    communityOverride: 'Сумісний за голосами спільноти',
+    communityOverrideNote: '⚠ Автоматичний аналіз не зміг підтвердити, але голоси спільноти вказують на сумісність',
   },
   en: {
     title: 'GOG Skyrim Mod Checker',
@@ -67,6 +69,8 @@ var translations = {
     voteIncompatible: 'Incompatible',
     communityVotes: 'Community votes:',
     voteSaved: 'Vote saved',
+    communityOverride: 'Community-verified compatible',
+    communityOverrideNote: '⚠ Automated analysis could not confirm, but community votes indicate compatibility',
   },
 };
 
@@ -182,6 +186,26 @@ function renderCard(mod) {
   }
 
   var votes = mod.userVotes || { compatible: 0, incompatible: 0 };
+  var displayStatus = mod.status;
+  var displayReason = mod.reason;
+  var isCommunityOverride = false;
+
+  var MIN_VOTE_THRESHOLD = 3;
+  if (
+    (mod.status === 'unknown' || mod.status === 'maybe') &&
+    votes.compatible >= MIN_VOTE_THRESHOLD &&
+    votes.compatible > votes.incompatible
+  ) {
+    displayStatus = 'yes';
+    displayReason = t('communityOverride');
+    isCommunityOverride = true;
+  }
+
+  var communityNoteHtml = '';
+  if (isCommunityOverride) {
+    communityNoteHtml = '<div class="compat-note community-override-note">' + esc(t('communityOverrideNote')) + '</div>';
+  }
+
   var voteHtml = '<div class="vote-section">' +
     '<div class="vote-buttons">' +
     '<button class="vote-btn vote-yes" data-mod-id="' + mod.id + '" data-vote="1" title="' + esc(t('voteCompatible')) + '">' +
@@ -193,20 +217,21 @@ function renderCard(mod) {
     '</div>' +
     '</div>';
 
-  return '<div class="mod-card card-' + esc(mod.status) + '" data-mod-id="' + mod.id + '">' +
+  return '<div class="mod-card card-' + esc(displayStatus) + (isCommunityOverride ? ' card-community-override' : '') + '" data-mod-id="' + mod.id + '">' +
     '<div class="card-left">' + thumb + '</div>' +
     '<div class="card-right">' +
     '<div class="mod-name"><a href="' + mod.url + '" target="_blank">' + esc(mod.name) + '</a></div>' +
     '<div class="mod-meta">' + esc(mod.author) + ' · ID ' + mod.id + '</div>' +
     '<div class="mod-summary">' + esc(mod.summary || '') + '</div>' +
-    '<div class="compat-reason ' + esc(mod.status) + '">' +
-      '<span class="compat-reason-text">' + esc(translateReason(mod.reason)) + '</span>' +
+    '<div class="compat-reason ' + esc(displayStatus) + '">' +
+      '<span class="compat-reason-text">' + esc(translateReason(displayReason)) + '</span>' +
       '<span class="compat-expand-hint">▼</span>' +
     '</div>' +
     voteHtml +
     '<div class="compat-details">' +
       evidenceHtml +
       notesHtml +
+      communityNoteHtml +
     '</div>' +
       '</div></div>';
 }
